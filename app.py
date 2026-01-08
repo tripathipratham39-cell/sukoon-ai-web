@@ -10,7 +10,8 @@ try:
     api_key = st.secrets["GEMINI_API_KEY"]
     genai.configure(api_key=api_key)
     # Sabse stable model name use kar rahe hain
-    model = genai.GenerativeModel('gemini-1.5-flash')
+    model = genai.GenerativeModel('gemini-pro')
+    
 except Exception as e:
     st.error(f"Setup Error: {e}")
 
