@@ -1,16 +1,20 @@
 import streamlit as st
 import google.generativeai as genai
 
-# Page setup
+# Page Config
 st.set_page_config(page_title="Sukoon AI", page_icon="🌙")
 st.title("🌙 Sukoon AI")
 
-# API Key connection
-api_key = st.secrets["GEMINI_API_KEY"]
-genai.configure(api_key=api_key)
-model = genai.GenerativeModel('gemini-1.5-flash')
+# API Key Connection (Secrets se)
+try:
+    api_key = st.secrets["GEMINI_API_KEY"]
+    genai.configure(api_key=api_key)
+    # Sabse stable model name use kar rahe hain
+    model = genai.GenerativeModel('gemini-1.5-flash')
+except Exception as e:
+    st.error(f"Setup Error: {e}")
 
-# Chat History setup
+# Chat History Setup
 if "messages" not in st.session_state:
     st.session_state.messages = []
 
@@ -24,10 +28,12 @@ if prompt := st.chat_input("Aaj aap kaisa feel kar rahe hain?"):
         st.markdown(prompt)
     
     with st.chat_message("assistant"):
-        # Personality logic
-        system_instruction = "Tum Sukoon AI ho. Tum ek empathetic therapist aur dost ho jo breakup ke dard ko samajhta hai. Hinglish mein baat karo."
-        full_interaction = f"{system_instruction}\n\nUser: {prompt}"
-        response = model.generate_content(full_interaction)
-        st.markdown(response.text)
-        st.session_state.messages.append({"role": "assistant", "content": response.text})
-      
+        try:
+            # Empathy Logic
+            system_instruction = "Tum Sukoon AI ho. Ek dost ki tarah Hinglish mein baat karo aur user ka dard samjho."
+            response = model.generate_content(f"{system_instruction}\n\nUser: {prompt}")
+            st.markdown(response.text)
+            st.session_state.messages.append({"role": "assistant", "content": response.text})
+        except Exception as e:
+            st.error(f"AI Error: {e}")
+            
