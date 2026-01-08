@@ -8,7 +8,7 @@ st.title("🌙 Sukoon AI")
 # API Key connection
 api_key = st.secrets["GEMINI_API_KEY"]
 genai.configure(api_key=api_key)
-model = genai.GenerativeModel('gemini-1.5-flash-latest')
+model = genai.GenerativeModel('gemini-1.5-flash')
 
 # Chat History setup
 if "messages" not in st.session_state:
